@@ -1,5 +1,6 @@
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Random;
 
 public class slidingBlock {
@@ -129,4 +130,56 @@ public class slidingBlock {
 		return true;
 
 	}
+	// find [W|W.....W|E|B|B|.....B]
+//			 |-------|   |........|
+	// numOfW numOfBlack
+
+	public static int closeToSolution(slidingBlock sb) {
+
+		char[] a = sb.blocks.clone();
+
+		Arrays.sort(a); // B<E<W
+
+		Collections.reverse(Arrays.asList(a)); // get something like the above
+
+		String str = new String(a);
+		int posOfLastWhite = str.lastIndexOf('W');
+
+		int posOfFirstBlack = str.indexOf('B');
+
+		char[] b = sb.blocks;
+
+		int count = 0;
+
+		for (int i = 0; i <= posOfLastWhite; i++) {
+			if (b[i] == 'B')
+				count += posOfFirstBlack - i;
+
+		}
+
+		if (b[posOfLastWhite + 1] != 'E')
+			count++;
+
+		for (int i = posOfFirstBlack; i < b.length; i++) {
+
+			if (b[i] == 'W')
+				count += i - posOfLastWhite;
+		}
+		return 0;
+	}
+
+	public static int numOfDifferences(slidingBlock sb, slidingBlock wanted) {
+
+		int count = 0;
+
+		char[] a = sb.blocks;
+		char[] b = wanted.blocks;
+
+		for (int i = 0; i < b.length; i++) {
+			if (b[i] != a[i])
+				count++;
+		}
+		return count;
+	}
+
 }
