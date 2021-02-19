@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Main {
 
-	public Queue<history> solve(slidingBlock sb) {
+	public static Queue<history> solve(slidingBlock sb, slidingBlock wanted) {
 
 		Queue<history> q = new LinkedList<history>();
 
@@ -17,6 +17,7 @@ public class Main {
 
 	public static void main(String[] args) {
 
+		//check the below to see how it works
 		slidingBlock s = new slidingBlock(10);
 
 		System.out.println(s + "\n");
@@ -27,7 +28,7 @@ public class Main {
 		System.out.println(h);
 
 		System.out.println("----------------------------------------------------");
-
+		//start of real program
 		System.out.println("Dose m se morfi WWBBEBBW px ton pinaka:");
 
 		Scanner scan = new Scanner(System.in);
@@ -50,8 +51,19 @@ public class Main {
 			System.exit(1);
 		}
 
+		if (!slidingBlock.canMatch(sb,wanted)) {
+			System.out.println("What you  gave me cannot become the other");
+			System.exit(1);
+		}
+		
+		Queue<history> q = solve(sb, wanted);
+		
+		for (history history : q) {
+			System.out.println(history);
+		}
 	}
 
+	//check if input in only Black and white and EMpty with only 1 empty
 	private static void checkInput(String line) {
 		char[] a = line.toCharArray();
 		boolean emptyAppeared = false;
@@ -70,7 +82,7 @@ public class Main {
 			}
 		}
 		if (!emptyAppeared) {
-			System.out.println("No empty");
+			System.out.println("No empty in your puzzle");
 			System.exit(1);
 		}
 	}

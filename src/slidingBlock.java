@@ -1,5 +1,5 @@
 
-import java.util.Iterator;
+import java.util.Arrays;
 import java.util.Random;
 
 public class slidingBlock {
@@ -105,5 +105,28 @@ public class slidingBlock {
 		if (locOfLeftistBlack < locOfRightestWhite)
 			return false;
 		return true;
+	}
+
+	public static boolean canMatch(slidingBlock sb, slidingBlock wanted) {
+		char[] a = sb.blocks.clone();
+
+		char[] b = wanted.blocks.clone();
+
+		Arrays.sort(a);
+		Arrays.sort(b);
+
+		System.out.println(sb.blocks);
+		System.out.println(a);
+
+		System.out.println(wanted.blocks);
+		System.out.println(b);
+
+		for (int i = 0; i < b.length; i++) {
+			if (a[i] != b[i])
+				return false;
+
+		}
+		return true;
+
 	}
 }

@@ -1,4 +1,5 @@
 
+// a nice way of showing moves and handling them
 public class move {
 
 	int posBefore;

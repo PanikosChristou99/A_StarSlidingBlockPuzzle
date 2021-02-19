@@ -1,4 +1,5 @@
 
+// a nice way of showing a change and printing it
 public class history {
 
 	protected slidingBlock sb;
