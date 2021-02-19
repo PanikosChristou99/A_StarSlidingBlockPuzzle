@@ -31,6 +31,13 @@ public class slidingBlock {
 		this.emptyLoc = random_integer;
 	}
 
+	public slidingBlock(String line) {
+		this.blocks = line.toCharArray();
+		this.length = line.length();
+		this.emptyLoc = line.indexOf('E');
+
+	}
+
 	public String toStringDetails() {
 
 		return "length is " + this.length + " with blocks " + new String(this.blocks).replaceAll("", "|");
@@ -59,5 +66,44 @@ public class slidingBlock {
 		}
 		temp.emptyLoc = a.emptyLoc;
 		return temp;
+	}
+
+	public static boolean isSolved(slidingBlock wanted) {
+		int locOfRightestWhite = -1;
+		boolean foundBlack = false;
+		int locOfLeftistBlack = -1;
+
+		char[] ar = wanted.blocks;
+
+		for (int i = 0; i < ar.length; i++) {
+			char c = ar[i];
+
+			switch (c) {
+			case 'W': {
+
+				if (foundBlack)
+					return false;
+				locOfRightestWhite = i;
+				break;
+			}
+			case 'B': {
+
+				if (foundBlack)
+					continue;
+				else {
+					locOfLeftistBlack = i;
+					foundBlack = true;
+				}
+				break;
+			}
+
+			default: {
+			}
+			}
+		}
+
+		if (locOfLeftistBlack < locOfRightestWhite)
+			return false;
+		return true;
 	}
 }
