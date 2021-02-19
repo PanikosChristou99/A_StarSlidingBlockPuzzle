@@ -26,7 +26,8 @@ public class Main {
 		history h = new history(s, new move(2, 5));
 
 		System.out.println(h);
-
+		
+		System.out.println();
 		System.out.println("----------------------------------------------------");
 		//start of real program
 		System.out.println("Dose m se morfi WWBBEBBW px ton pinaka:");
