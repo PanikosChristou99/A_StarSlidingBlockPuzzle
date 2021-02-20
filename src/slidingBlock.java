@@ -151,21 +151,21 @@ public class slidingBlock {
 
 		int count = 0;
 
-		for (int i = 0; i <= posOfLastWhite; i++) {
+		for (int i = 0; i <= posOfLastWhite; i++) { // the sum of the blacks lefter than fiirs black
 			if (b[i] == 'B')
 				count += posOfFirstBlack - i;
 
 		}
 
-		if (b[posOfLastWhite + 1] != 'E')
+		if (b[posOfLastWhite + 1] != 'E') // if E is where it ssuppossed to be
 			count++;
 
-		for (int i = posOfFirstBlack; i < b.length; i++) {
+		for (int i = posOfFirstBlack; i < b.length; i++) { // the sum of the whites righter than last white
 
 			if (b[i] == 'W')
 				count += i - posOfLastWhite;
 		}
-		return 0;
+		return count;
 	}
 
 	public static int numOfDifferences(slidingBlock sb, slidingBlock wanted) {
@@ -182,4 +182,13 @@ public class slidingBlock {
 		return count;
 	}
 
+	public static slidingBlock getGeneralSolution(slidingBlock sb) {
+		char[] a = sb.blocks.clone();
+
+		Arrays.sort(a); // B<E<W
+
+		Collections.reverse(Arrays.asList(a)); // get something like the above
+		return new slidingBlock(new String(a));
+
+	}
 }
