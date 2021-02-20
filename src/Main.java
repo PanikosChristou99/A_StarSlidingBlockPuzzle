@@ -6,10 +6,14 @@ import java.util.Scanner;
 
 public class Main {
 
-	public static Queue<history> solve(slidingBlock sb, slidingBlock wanted) {
+	public static Queue<History> solve(SlidingBlock sb, SlidingBlock wanted) {
 
-		Queue<history> q = new LinkedList<history>();
+		Queue<History> q = new LinkedList<History>();
 
+		SlidingBlock sol = SlidingBlock.getGeneralSolution(sb);
+		int heurCost = SlidingBlock.calcCost(sb, wanted, sol);
+		
+		AStarNode start = new AStarNode(null,0,heurCost,sb);
 		// todo heuristic maybe how right are the whites from the leftest black?
 
 		//
@@ -20,12 +24,12 @@ public class Main {
 	public static void main(String[] args) {
 
 		//check the below to see how it works
-		slidingBlock s = new slidingBlock(10);
+		SlidingBlock s = new SlidingBlock(10);
 
 		System.out.println(s + "\n");
 
 		s.switchBlocks(2, 5);
-		history h = new history(s, new move(2, 5));
+		History h = new History(s, new Move(2, 5));
 
 		System.out.println(h);
 		
@@ -39,30 +43,30 @@ public class Main {
 
 		checkInput(line);
 
-		slidingBlock sb = new slidingBlock(line);
+		SlidingBlock sb = new SlidingBlock(line);
 
 		System.out.println("Dose m se morfi WWBBEBBW px ton pinaka pou thes na ftasi:");
 
 		line = scan.nextLine().toUpperCase();
-
+		scan.close();
 		checkInput(line);
 
-		slidingBlock wanted = new slidingBlock(line);
+		SlidingBlock wanted = new SlidingBlock(line);
 
-		if (!slidingBlock.isSolved(wanted)) {
+		if (!SlidingBlock.isSolved(wanted)) {
 			System.out.println("What you  gave me is not solved");
 			System.exit(1);
 		}
 
-		if (!slidingBlock.canMatch(sb,wanted)) {
+		if (!SlidingBlock.canMatch(sb,wanted)) {
 			System.out.println("What you  gave me cannot become the other");
 			System.exit(1);
 		}
 		
-		Queue<history> q = solve(sb, wanted);
+		Queue<History> q = solve(sb, wanted);
 		
-		for (history history : q) {
-			System.out.println(history);
+		for (History History : q) {
+			System.out.println(History);
 		}
 	}
 

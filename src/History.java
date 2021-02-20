@@ -1,11 +1,11 @@
 
 // a nice way of showing a change and printing it
-public class history {
+public class History {
 
-	protected slidingBlock sb;
-	protected move m;
+	protected SlidingBlock sb;
+	protected Move m;
 
-	public history(slidingBlock sb, move m) {
+	public History(SlidingBlock sb, Move m) {
 		super();
 		this.sb = sb;
 		this.m = m;

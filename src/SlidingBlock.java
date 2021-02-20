@@ -3,13 +3,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 
-public class slidingBlock {
+public class SlidingBlock {
 
 	protected int length;
 	protected char[] blocks;
 	protected int emptyLoc;
 
-	public slidingBlock(int length) {
+	public SlidingBlock(int length) {
 		Random rd = new Random(2);
 
 		this.length = length;
@@ -32,7 +32,7 @@ public class slidingBlock {
 		this.emptyLoc = random_integer;
 	}
 
-	public slidingBlock(String line) {
+	public SlidingBlock(String line) {
 		this.blocks = line.toCharArray();
 		this.length = line.length();
 		this.emptyLoc = line.indexOf('E');
@@ -58,9 +58,9 @@ public class slidingBlock {
 		this.blocks[b] = prev;
 	}
 
-	protected slidingBlock clone(slidingBlock a) {
+	protected SlidingBlock clone(SlidingBlock a) {
 
-		slidingBlock temp = new slidingBlock(a.length);
+		SlidingBlock temp = new SlidingBlock(a.length);
 
 		for (int i = 0; i < a.blocks.length; i++) {
 			temp.blocks[i] = a.blocks[i];
@@ -69,7 +69,7 @@ public class slidingBlock {
 		return temp;
 	}
 
-	public static boolean isSolved(slidingBlock wanted) {
+	public static boolean isSolved(SlidingBlock wanted) {
 		int locOfRightestWhite = -1;
 		boolean foundBlack = false;
 		int locOfLeftistBlack = -1;
@@ -108,7 +108,7 @@ public class slidingBlock {
 		return true;
 	}
 
-	public static boolean canMatch(slidingBlock sb, slidingBlock wanted) {
+	public static boolean canMatch(SlidingBlock sb, SlidingBlock wanted) {
 		char[] a = sb.blocks.clone();
 
 		char[] b = wanted.blocks.clone();
@@ -134,15 +134,9 @@ public class slidingBlock {
 //			 |-------|   |........|
 	// numOfW numOfBlack
 
-	public static int closeToSolution(slidingBlock sb) {
+	public static int closeToSolution(SlidingBlock sb, SlidingBlock generalSolution) {
 
-		char[] a = sb.blocks.clone();
-
-		Arrays.sort(a); // B<E<W
-
-		Collections.reverse(Arrays.asList(a)); // get something like the above
-
-		String str = new String(a);
+		String str = new String(generalSolution.blocks);
 		int posOfLastWhite = str.lastIndexOf('W');
 
 		int posOfFirstBlack = str.indexOf('B');
@@ -168,7 +162,7 @@ public class slidingBlock {
 		return count;
 	}
 
-	public static int numOfDifferences(slidingBlock sb, slidingBlock wanted) {
+	public static int numOfDifferences(SlidingBlock sb, SlidingBlock wanted) {
 
 		int count = 0;
 
@@ -182,13 +176,19 @@ public class slidingBlock {
 		return count;
 	}
 
-	public static slidingBlock getGeneralSolution(slidingBlock sb) {
+	public static SlidingBlock getGeneralSolution(SlidingBlock sb) {
 		char[] a = sb.blocks.clone();
 
 		Arrays.sort(a); // B<E<W
 
 		Collections.reverse(Arrays.asList(a)); // get something like the above
-		return new slidingBlock(new String(a));
+		return new SlidingBlock(new String(a));
+
+	}
+
+	public static int calcCost(SlidingBlock sb, SlidingBlock wanted, SlidingBlock generalSolution) {
+
+		return numOfDifferences(sb, wanted) + closeToSolution(sb, generalSolution);
 
 	}
 }
