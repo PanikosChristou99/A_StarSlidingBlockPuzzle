@@ -9,21 +9,21 @@ import java.util.Queue;
 import java.util.Scanner;
 
 public class Main {
-
-
+	
+	
 
 	public static Queue<HistoryState> solve(SlidingBlock initialSlidingBlock, SlidingBlock wanted) {
 		AStarNode.goalState=wanted;
-
-
-
+		
+		
+		
 		Queue<HistoryState> history = new LinkedList<HistoryState>();
 		boolean foundPath=false;
-
+		
 		AStarNode startNode = new AStarNode(null,0,initialSlidingBlock);
         Frontier frontier = new Frontier();
-        HashMap<SlidingBlock, Integer> exploredBlocks = new HashMap<>();
-
+        HashMap<SlidingBlock, Integer> exploredBlocks = new HashMap<>(); 
+        
         frontier.add(startNode);
         while(!frontier.isEmpty()) {
         	AStarNode currentNode= frontier.poll();
@@ -36,7 +36,7 @@ public class Main {
         	ArrayList<AStarNode> childrenBlocks= currentNode.getChildren();
         	for(AStarNode child: childrenBlocks) {
         		AStarNode frontierNodeWithSameSlidingBlock=frontier.getNodeWithThisSlidingBlock(child.slidingBlock);
-        		if(!exploredBlocks.containsKey(child.slidingBlock) ||
+        		if(!exploredBlocks.containsKey(child.slidingBlock) || 
         			(frontierNodeWithSameSlidingBlock==null)){
         			frontier.add(child);
         		}
@@ -68,7 +68,7 @@ public class Main {
 		SlidingBlock sb = new SlidingBlock(line);
 
 		System.out.println("Dose m se morfi WWBBEBBW px ton pinaka pou thes na ftasi:");
-//WWWBEBB
+
 		line = scan.nextLine().toUpperCase();
 		scan.close();
 		checkInput(line);
@@ -84,9 +84,9 @@ public class Main {
 			System.out.println("What you  gave me cannot become the other");
 			System.exit(1);
 		}
-
+		
 		Queue<HistoryState> q = solve(sb, wanted);
-
+		
 		for (HistoryState History : q) {
 			System.out.println(History);
 		}

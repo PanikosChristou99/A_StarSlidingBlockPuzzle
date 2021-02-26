@@ -1,3 +1,5 @@
+package TempPackage;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -6,7 +8,7 @@ import java.util.Random;
 public class SlidingBlock {
 
 	protected int length;
-	protected char[] blocks = new char[length];
+	protected char[] blocks;
 	protected int emptyLoc;
 
 	public SlidingBlock(int length) {
@@ -143,7 +145,7 @@ public class SlidingBlock {
 		int posOfFirstBlack = str.indexOf('B');
 
 		char[] b = sb.blocks;
-//WWWWWEBBB  BBWWEBWWW
+
 		int count = 0;
 
 		for (int i = 0; i <= posOfLastWhite; i++) { // the sum of the blacks lefter than fiirs black
@@ -173,15 +175,6 @@ public class SlidingBlock {
 		for (int i = 0; i < b.length; i++) {
 			if (b[i] != a[i])
 				count++;
-		}
-
-		if (isSolved(sb)) {
-			// just in case we reach a solution, and the E is further than 2 blocks, then we
-			// can know how far E is from its desired place
-			int posOfEmpty1 = (new String(sb.blocks)).indexOf('E');
-			int posOfEmpty2 = (new String(sb.blocks)).indexOf('E');
-
-			count += Math.abs(posOfEmpty1 - posOfEmpty2);
 		}
 		return count;
 	}

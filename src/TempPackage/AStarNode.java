@@ -1,3 +1,5 @@
+package TempPackage;
+
 import java.util.ArrayList;
 
 public class AStarNode implements Comparable<Object> {
