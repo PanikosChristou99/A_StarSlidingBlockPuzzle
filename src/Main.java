@@ -14,6 +14,8 @@ public class Main {
 		int heurCost = SlidingBlock.calcCost(sb, wanted, sol);
 		
 		AStarNode start = new AStarNode(null,0,heurCost,sb);
+		
+		
 		// todo heuristic maybe how right are the whites from the leftest black?
 
 		//
@@ -29,6 +31,8 @@ public class Main {
 		System.out.println(s + "\n");
 
 		s.switchBlocks(2, 5);
+		
+		
 		History h = new History(s, new Move(2, 5));
 
 		System.out.println(h);
@@ -46,7 +50,7 @@ public class Main {
 		SlidingBlock sb = new SlidingBlock(line);
 
 		System.out.println("Dose m se morfi WWBBEBBW px ton pinaka pou thes na ftasi:");
-
+//WWWBEBB
 		line = scan.nextLine().toUpperCase();
 		scan.close();
 		checkInput(line);
