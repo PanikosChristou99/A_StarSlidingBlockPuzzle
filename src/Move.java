@@ -6,14 +6,21 @@ public class Move {
 	int posAfter;
 
 	public Move(int posBefore, int posAfter) {
-		super();
 		this.posBefore = posBefore;
 		this.posAfter = posAfter;
 	}
 
+	public Move() {
+		this.posBefore = -1;
+		this.posAfter = -1;
+	}
+
 	@Override
 	public String toString() {
-		return "tile " + posBefore + " to " + posAfter;
+		if (this.posBefore == -1)
+			return "initial Block";
+		else
+			return "Move plate from " + posBefore + " to " + posAfter;
 	}
 
 }

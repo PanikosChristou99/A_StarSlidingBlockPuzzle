@@ -51,7 +51,7 @@ public class SlidingBlock {
 
 	public boolean switchBlocks(int a, int b) {
 
-		if (a < 0 || a > this.length || b < 0 || b > this.length)
+		if (a < 0 || a >= this.length || b < 0 || b >= this.length)
 			return false;
 		char prev = this.blocks[a];
 		this.blocks[a] = this.blocks[b];
@@ -59,7 +59,7 @@ public class SlidingBlock {
 		return true;
 	}
 
-	protected SlidingBlock clone(SlidingBlock a) {
+	protected static SlidingBlock clone(SlidingBlock a) {
 
 		SlidingBlock temp = new SlidingBlock(a.length);
 
@@ -210,4 +210,35 @@ public class SlidingBlock {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(blocks);
+		result = prime * result + emptyLoc;
+		result = prime * result + length;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SlidingBlock other = (SlidingBlock) obj;
+		if (!Arrays.equals(blocks, other.blocks))
+			return false;
+		if (emptyLoc != other.emptyLoc)
+			return false;
+		if (length != other.length)
+			return false;
+		return true;
+	}
+	
+
+	
 }

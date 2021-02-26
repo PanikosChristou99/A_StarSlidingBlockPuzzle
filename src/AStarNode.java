@@ -2,23 +2,25 @@ import java.util.ArrayList;
 
 public class AStarNode implements Comparable<Object> {
 	public static SlidingBlock goalState;
-	public static int numberOfAllowedJumps;
+	public static int numberOfAllowedJumps=2;
 
 	AStarNode parentNode;
 	int costFromStart;
 	int heurCost;
 	SlidingBlock slidingBlock;
-
+	Move moveThatGotMeHere;
+	
 	public int getCost() {
 		return costFromStart + heurCost;
 	}
 	
-	public AStarNode(AStarNode parentNode, int costFromStart, SlidingBlock slidingBlock) {
+	public AStarNode(AStarNode parentNode, int costFromStart, SlidingBlock slidingBlock,Move move) {
 		super();
 		this.parentNode = parentNode;
 		this.costFromStart = costFromStart;
 		this.heurCost = SlidingBlock.numOfDifferences(slidingBlock,goalState);
 		this.slidingBlock = slidingBlock;
+		this.moveThatGotMeHere=move;
 	}
 	
 
@@ -47,16 +49,19 @@ public class AStarNode implements Comparable<Object> {
 	public ArrayList<AStarNode> getChildren(){
 		//TODO create children.
 		ArrayList<AStarNode> children =new ArrayList<AStarNode>();
-		for(int jump=1; jump<=numberOfAllowedJumps+1; jump++) {
-			SlidingBlock newBlock = SlidingBlock.copy(this.slidingBlock);
+		for(int jump=0; jump<=numberOfAllowedJumps; jump++) {
+			SlidingBlock newBlock = SlidingBlock.clone(this.slidingBlock);
 			int aristera=this.slidingBlock.emptyLoc-1-jump;
 			int deksia=this.slidingBlock.emptyLoc+1+jump;
 			if(newBlock.switchBlocks(newBlock.emptyLoc, aristera)) {
-				AStarNode child = new AStarNode(this, this.costFromStart+ jump+1, newBlock);
+				newBlock.emptyLoc=aristera;
+				AStarNode child = new AStarNode(this, this.costFromStart+ jump+1, newBlock, new Move(aristera,this.slidingBlock.emptyLoc));
 				children.add(child);
 			}
+			newBlock=SlidingBlock.clone(this.slidingBlock);
 			if(newBlock.switchBlocks(newBlock.emptyLoc, deksia)) {
-				AStarNode child = new AStarNode(this, this.costFromStart+ jump+1, newBlock);
+				newBlock.emptyLoc=deksia;
+				AStarNode child = new AStarNode(this, this.costFromStart+ jump+1, newBlock,new Move(deksia,this.slidingBlock.emptyLoc));
 				children.add(child);
 			}
 		}

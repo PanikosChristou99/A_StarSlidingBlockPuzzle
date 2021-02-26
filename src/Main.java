@@ -6,20 +6,32 @@ import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class Main {
+	
+	public static String findPath (AStarNode finalNode) {
+		Stack<String> stack = new Stack<String>();
+		AStarNode node=finalNode;
+		while(node!=null) {
+			stack.push(node.slidingBlock.toString());
+			stack.push(node.moveThatGotMeHere.toString());
+			node=node.parentNode;
+		}
+		String path="";
+		while(stack.isEmpty()==false) {
+			path=path+stack.pop()+"\n";
+		}
+		return path;
+	}
 
-
-
-	public static Queue<HistoryState> solve(SlidingBlock initialSlidingBlock, SlidingBlock wanted) {
+	public static String solve(SlidingBlock initialSlidingBlock, SlidingBlock wanted) {
 		AStarNode.goalState=wanted;
 
+//		Queue<HistoryState> history = new LinkedList<HistoryState>();
+		AStarNode finalNode=null;
 
-
-		Queue<HistoryState> history = new LinkedList<HistoryState>();
-		boolean foundPath=false;
-
-		AStarNode startNode = new AStarNode(null,0,initialSlidingBlock);
+		AStarNode startNode = new AStarNode(null,0,initialSlidingBlock, new Move());
         Frontier frontier = new Frontier();
         HashMap<SlidingBlock, Integer> exploredBlocks = new HashMap<>();
 
@@ -27,7 +39,7 @@ public class Main {
         while(!frontier.isEmpty()) {
         	AStarNode currentNode= frontier.poll();
         	if(currentNode.isEndState()) {
-        		foundPath=true;
+        		finalNode=currentNode;
         		break;
 //        		return history;
         	}
@@ -43,15 +55,17 @@ public class Main {
         			frontierNodeWithSameSlidingBlock.parentNode=child.parentNode;
         			frontierNodeWithSameSlidingBlock.costFromStart=child.costFromStart;
         			frontierNodeWithSameSlidingBlock.heurCost=child.heurCost;
+        			frontierNodeWithSameSlidingBlock.moveThatGotMeHere=child.moveThatGotMeHere;
         		}
         	}
         }
-        if(foundPath==false) {
+        if(finalNode==null) {
         	System.out.println("i found no path");
         	return null;
         }
         else {
-        	return history;
+        	return findPath(finalNode);
+//        	return history;
         }
 	}
 
@@ -60,7 +74,8 @@ public class Main {
 		System.out.println("Dose m se morfi WWBBEBBW px ton pinaka:");
 
 		Scanner scan = new Scanner(System.in);
-		String line = scan.nextLine().toUpperCase();
+//		String line = scan.nextLine().toUpperCase();
+		String line = "BWWBEBBW";
 
 		checkInput(line);
 
@@ -68,7 +83,8 @@ public class Main {
 
 		System.out.println("Dose m se morfi WWBBEBBW px ton pinaka pou thes na ftasi:");
 //WWWBEBB
-		line = scan.nextLine().toUpperCase();
+//		line = scan.nextLine().toUpperCase();
+		line = "WWWBBEBB";
 		scan.close();
 		checkInput(line);
 
@@ -84,11 +100,8 @@ public class Main {
 			System.exit(1);
 		}
 
-		Queue<HistoryState> q = solve(sb, wanted);
-
-		for (HistoryState History : q) {
-			System.out.println(History);
-		}
+		String path= solve(sb, wanted);
+		System.out.println(path);
 	}
 
 	//check if input in only Black and white and EMpty with only 1 empty
