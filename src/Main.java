@@ -8,8 +8,21 @@ import java.util.Queue;
 import java.util.Scanner;
 import java.util.Stack;
 
+
 public class Main {
-	
+
+
+	/**
+	 * This function helps us trace back the path from the final node 
+	 * to the initial node.
+	 * 
+	 * Basically it puts in a stack the sliding block and 
+	 * then the move that changed the block into that one
+	 * from the final node up to the initial node.   
+	 * 
+	 * @param AStarNode finalNode, this is the final Node
+	 * @return returns the path in string format.
+	 */
 	public static String findPath (AStarNode finalNode) {
 		Stack<String> stack = new Stack<String>();
 		AStarNode node=finalNode;
@@ -24,37 +37,58 @@ public class Main {
 		}
 		return path;
 	}
+	
+	/**
+	 * This function finds the path from the initial Block to the desired block. 
+	 * 
+	 * This function implements the A star algorithm to find the path from the initial block 
+	 * to the desired block. 
+	 * 
+	 * @param SlidingBlock initialSlidingBlock, this is the initial Block.
+	 * @param SlidingBlock desiredBlock, this is the desired Block.
+	 * @return returns the path in string format.
+	 */
+	public static String solve(SlidingBlock initialSlidingBlock, SlidingBlock desiredBlock) {
+		AStarNode.goalState=desiredBlock; // start by setting the goal state. 
 
-	public static String solve(SlidingBlock initialSlidingBlock, SlidingBlock wanted) {
-		AStarNode.goalState=wanted;
-
-//		Queue<HistoryState> history = new LinkedList<HistoryState>();
 		AStarNode finalNode=null;
-
 		AStarNode startNode = new AStarNode(null,0,initialSlidingBlock, new Move());
-        Frontier frontier = new Frontier();
-        HashMap<SlidingBlock, Integer> exploredBlocks = new HashMap<>();
+        Frontier frontier = new Frontier(); // this is the frontier. Here the soon to be explored nodes will wait. 
+        HashMap<SlidingBlock, Integer> exploredBlocks = new HashMap<>(); //Used to avoid cycles.
 
+        //put initial node in the froniter.
         frontier.add(startNode);
         while(!frontier.isEmpty()) {
+        	//get most promessing node from frontier. 
         	AStarNode currentNode= frontier.poll();
+        	// check to see if it a the goal state.
         	if(currentNode.isEndState()) {
+        		// if it is then great. No need to see other nodes since 					F(n)= h(n)+ g(n) where h(n) is the heuristic function
+        		// A star expands the node n with the  F(n)	and since h(n)					and g(n) is the path cost. 
+        		// here is 0 this means that this g(n) must be minimal. 
         		finalNode=currentNode;
         		break;
-//        		return history;
         	}
+        	//is it isn't then we set this block as explored.
         	exploredBlocks.put(currentNode.slidingBlock,currentNode.costFromStart);
+        	// find the children of this block.
         	ArrayList<AStarNode> childrenBlocks= currentNode.getChildren();
         	for(AStarNode child: childrenBlocks) {
+        		//for each child check to see if there is another
+        		//node in the frontier with the same Sliding block
         		AStarNode frontierNodeWithSameSlidingBlock=frontier.getNodeWithThisSlidingBlock(child.slidingBlock);
         		if(!exploredBlocks.containsKey(child.slidingBlock) ||
         			(frontierNodeWithSameSlidingBlock==null)){
+        			//if there is not any node with this sliding block and
+        			//this block is not expored then
         			frontier.add(child);
         		}
         		else if(frontierNodeWithSameSlidingBlock!=null) {
+        			//if is it not expored but there is a node with this sliding block then we
+        			//just set the node in the frontier to be the same as this node.
         			frontierNodeWithSameSlidingBlock.parentNode=child.parentNode;
         			frontierNodeWithSameSlidingBlock.costFromStart=child.costFromStart;
-        			frontierNodeWithSameSlidingBlock.heurCost=child.heurCost;
+        			frontierNodeWithSameSlidingBlock.heuristicCost=child.heuristicCost;
         			frontierNodeWithSameSlidingBlock.moveThatGotMeHere=child.moveThatGotMeHere;
         		}
         	}
@@ -65,7 +99,6 @@ public class Main {
         }
         else {
         	return findPath(finalNode);
-//        	return history;
         }
 	}
 
